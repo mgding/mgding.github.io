@@ -4,22 +4,38 @@
     <meta charset="utf-8">
 	<title>document</title>
 <script>
-window.onload=function(){
-    function WeiXinShareBtn() {
-        if (typeof WeixinJSBridge == "undefined") {
-            alert(" 请先通过微信搜索 wow36kr 添加36氪为好友，通过微信分享文章 :) ");
-        } else {
-            WeixinJSBridge.invoke('shareTimeline', {
-            "title": "图吧汽车卫士",
-            "link": "http://box.mapbar.com/",
-            "desc": "一款智能的安全行车伴侣系统，通过即插迷你终端设备及智能app软件，轻松构建手机与汽车的连接桥梁。",
-            "img_url": "http://box.mapbar.com/img/index_ico_logo.png"
-            });
-        }
+var shareToWeixinFriend =  function(data, cb)
+{
+    if (typeof WeixinJSBridge == 'undefined') {
+        alert("没有WeixinJSBridge");
     }
+    else {
+        WeixinJSBridge.invoke('shareTimeline', {
+            'img_url': data.imgurl || '',
+            'link': data.url,
+            'desc': data.desc,
+            'title': data.title
+        }, function(d) {
+            // 返回res.err_msg取值，d还有一个属性是err_desc
+            // share_timeline:cancel 用户取消
+            // share_timeline:fail　发送失败
+            // share_timeline:confirm 发送成功
+            WeixinJSBridge.log(d.err_msg);
+            cb && cb(d.err_msg);
+        });
+    }
+    return false;
+}
+window.onload=function(){
+    
     var oBtn = document.getElementById('btn');
     oBtn.onclick=function(){
-        WeiXinShareBtn()
+        shareToWeixinFriend({
+            'img_url': 'http://box.mapbar.com/img/index_ico_logo.png',
+            'link': 'http://box.mapbar.com/',
+            'desc': '一款智能的安全行车伴侣系统，通过即插迷你终端设备及智能app软件，轻松构建手机与汽车的连接桥梁。',
+            'title': '图吧汽车卫士'
+        })
     }
 }
 </script>
