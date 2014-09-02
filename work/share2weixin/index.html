@@ -30,12 +30,15 @@ var shareToWeixinFriend =  function(data, cb)
 window.onload=function(){
     
     var oBtn = document.getElementById('btn');
+    var oP = document.getElementById('p');
     oBtn.onclick=function(){
         shareToWeixinFriend({
             'img_url': 'http://box.mapbar.com/img/index_ico_logo.png',
             'link': 'http://box.mapbar.com/',
             'desc': '一款智能的安全行车伴侣系统，通过即插迷你终端设备及智能app软件，轻松构建手机与汽车的连接桥梁。',
             'title': '图吧汽车卫士'
+        },function(){
+            oP.innerHTML = '已经返回了'
         })
     }
 }
@@ -43,5 +46,6 @@ window.onload=function(){
 </head>
 <body>
     <button id="btn">分享到微信</button>
+    <p id="p"></p>
 </body>
 </html>
