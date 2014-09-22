@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>图吧汽车卫士-支付成功</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+	<link rel="stylesheet" type="text/css" href="style/base.css?v=1.2.0">
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="js/common.js?v=1.2.0"></script>
+<style>
+ul{list-style: none; margin: 0; padding: 0;}
+.block2{ width: 90%; margin: 1.5em 5%; font: 0.9em/1.8em microsoft yahei; text-align: left; color: #333;}
+
+.orderBanner{ background: url(img/20140909/order_banner.png) no-repeat #f89e34;  -webkit-background-size:cover; background-size:cover;}
+.orderBanner .tit{padding-top:16.25%;}
+.orderBanner .txt{padding:3% 7.64% 10% 7.64%; color: #fff; text-align: left; line-height: 1.8em; font-size: 0.9em;}
+.orderBanner .txt em{ font-size: 1.5em; font-style: normal; margin: 0 0.5em;}
+
+.orderNum{ background: #fff; border-radius: 5px; color: #5d6368; font-weight: bold; font-size: 1.1em; margin-top: 2em; margin-bottom: 2em;}
+
+.succ_bottom{ width: 90%; margin: 1.5em 5%; border: 1px solid #d4d4d4; text-align: left;}
+.succ_bottom img{ width: 22%; padding:1em 0 0 1em;}
+.succ_bottom p{margin: 0;}
+.succ_bottom .code{ margin:0.2em 1em 1em 1em; color: #07a0f9;}
+.succ_bottom .codeName{ float: right;}
+.succ_bottom .codeTit{color: #5d6368; display: none;}
+</style>
+</head>
+<body>
+<div id="content">
+	<div class="block orderBanner">
+		<img class="block_img tit" src="img/20140909/paySucc_p2.png" alt="">
+		<p class="btn orderNum">订单号：<span id="orderNum"></span></p>
+		<p class="txt">我们将在2个工作日内为您寄出购买的设备，请您耐心等待。请牢记订单号和附赠图吧导航激活码。感谢您的购买。<br>有疑问请咨询客服：400-661-6677</p>
+	</div>
+
+
+	<div class="block">
+		<div class="succ_bottom">
+			<div id="cdk1" style="margin-left:1em;">正在获取激活码...</div>
+			<div id="cdk2" style="display: none;">
+				<img src="img/paySucc_02.png">
+				<div class="code cf">
+					<p class="codeTit">图吧导航VIP激活码：</p>
+					<p><span class="codeName">全国数据</span><span id="codeData"></span></p>
+					<div style="clear:both;"></div>
+					<p><span class="codeName">增强电子眼</span><span id="codeEye"></span></p>
+				</div>
+			</div>
+			<div id="cdk3" style="display: none; padding:1em;">
+				
+				图吧导航VIP激活码获取失败，请点击“重新获取”按钮获取。如果多次尝试获取失败，请将订单号发给客服处理： <br>电话：400-661-6677   <br>qq群：211366226
+				<a href="javascript:;" class="btn btn_normal" style="margin-top:1em">重新获取</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="block">
+		<a id="backToHomePage" class="btn btn_normal" style="margin-top:2em; margin-bottom:2em;" href="javascript:;">返回首页</a>
+	</div>
+	
+</div>
+<script>
+$(function(){
+	var order_num=oSearch.out_trade_no;
+	
+	$('#orderNum').text(order_num);
+
+	getCDK(order_num);
+
+	$('#cdk3').on('click',function(){
+		getCDK(order_num);
+	})
+
+	function getCDK(order_num){
+		$.ajax({
+			url: postCDK,
+			data: {"orderId":order_num},
+			beforeSend: function(){
+				$('#cdk2').hide();
+				$('#cdk3').hide();
+				$('#cdk1').show();
+			},
+			success: function(data){
+				if(data.code == 200){
+					if(data.arrays[0].order_status == 000){
+						$('#codeData').text(data.arrays[0].nationDataCode);
+						$('#codeEye').text(data.arrays[0].electronicCode);
+
+						$('#cdk1').hide();
+						$('#cdk3').hide();
+
+						$('#cdk2').show();
+					}else{
+						$('#cdk1').hide();
+						$('#cdk2').hide();
+
+						$('#cdk3').show();
+					}
+				}else{
+					$('#cdk1').hide();
+					$('#cdk2').hide();
+
+					$('#cdk3').show();
+				}
+			},
+			error: function (){
+				$('#cdk1').hide();
+				$('#cdk2').hide();
+
+				$('#cdk3').show();
+			}
+		})
+	}
+
+	$('#backToHomePage').on('click',function(){
+		window.location.href = getCookie('homePage').replace(/@@@/g,'=')
+	})
+})
+</script>
+</body>
+</html>

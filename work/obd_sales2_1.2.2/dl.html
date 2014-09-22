@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>图吧汽车卫士-下载图吧</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+	<link rel="stylesheet" type="text/css" href="style/base.css?v=1.2.0">
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="js/common.js?v=1.2.0"></script>
+<style>
+body,html{ height: 100%;}
+ul{list-style: none; margin: 0; padding: 0;}
+p{ margin: 0;}
+
+#isWX p{ font: 0.9em/2em microsoft yahei; text-indent: 2em; text-align: left; color: #767a83; padding: 2em 2em;}
+#isNotWX p{ font: 1em/2em microsoft yahei; text-indent: 2em; text-align: left; color: #767a83; padding: 3em 2em 2em 2em;}
+#isNotWX img{width: 27.78%; margin: 0 auto;}
+</style>
+</head>
+<body>
+<div id="content">
+	<div id="isWX" class="block">
+		<img class="block_img" src="img/20140909/dl_pic01.png" alt="用浏览器打开">
+		<p>参加抽奖需下载最新版图吧导航，请您点击右上角按钮，选择用浏览器打开进行下载。若您已经安装了最新版图吧导航，请启动导航进入活动，进行抽奖。</p>
+	</div>
+	<div id="isNotWX" class="block">
+		<p>点击下方图标下载图吧导航，安装完成后启动导航进入活动页面进行抽奖。</p>
+		<a href="http://datamobile.mapbar.com/map/mobile/app/mapbar_navi.apk"><img src="img/20140909/dl_pic02.png" alt="用浏览器打开"></a>
+	</div>
+</div>
+<script>
+var UA = navigator.userAgent.toLowerCase();
+$(function(){
+	if(UA.indexOf('micromessenger') == -1){
+		$('#isWX').hide();
+		$('#isNotWX').show();
+	}else{
+		$('#isWX').show();
+		$('#isNotWX').hide();
+	}
+})
+</script>
+</body>
+</html>

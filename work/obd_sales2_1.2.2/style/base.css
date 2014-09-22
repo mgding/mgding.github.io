@@ -1,0 +1,45 @@
+/* CSS Document */
+body {
+	font-family: Microsoft Yahei;
+	margin: 0;
+	padding: 0;
+	color: #000;
+	font-size: 1em;
+}
+#content {
+	margin: 0 auto;
+	width: 100%;
+	max-width: 720px;
+	text-align: center;
+	line-height: 2.3em;
+}
+input:focus,select:focus,a:focus{ outline: 0;}
+.cf:after,.cf:before{content: ''; display: table;}
+.cf:after{clear: both;}
+.cf{ *zoom:1;}
+.bc{ margin-left: auto; margin-right: auto;}
+.fl{float: left;}
+.block{ width: 100%; position: relative;}
+.block_line{ border-bottom:2px solid #d9d9d9;}
+.block_img{vertical-align: bottom; display: block; width: 100%;}
+.btn{ margin-left: 8%; margin-right: 8%; width: 84%; display: block; border-radius: 3px; text-align: center; text-decoration: none; padding: 0.6em 0; font-size: 1.2em;}
+.btn2{ margin-left: 18%; margin-right: 18%; width: 64%; display: block; border-radius: 3px; text-align: center; text-decoration: none; padding: 0.6em 0; font-size: 1.5em;}
+.btn_normal{ background: #31c5b9; color: #fff;}
+
+/*弹出框*/
+.dialogMask{ width: 100%; height: 200%; position: fixed; background: #000; opacity: 0.8; z-index: 100; top: -20%; left: 0;}
+.dialog,.myDialog{ width: 80%; max-width: 566px; position: fixed; top: 20%; left: 50%; margin-left: -39%; background: #fff; z-index: 1000;}
+.myDialog{ display: none;}
+.diaContent{ padding: 2.2em 1.4em; line-height: 1.8em; text-align: left;}
+.diaContent2{ padding: 6.54% 0; text-align: left;}
+.diaBtn{ border-top: 1px solid #b6b8bb;}
+.diaBtn a{ float: left; text-align: center; text-decoration: none ; color: #35bdb2; line-height: 3.6em; overflow: hidden;}
+.diaBtn1{ width: 100%;}
+.diaBtn2{ width: 50%; border-right: 1px solid #b6b8bb; margin-left: -1px;}
+.diaBtn3{ width: 50%;}
+.diaTit{ border-bottom: 2px solid #35bdb2; line-height: 3.4em;}
+@media all and (min-width: 720px){
+	.dialog,.myDialog{
+		margin-left: -283px;
+	}
+}

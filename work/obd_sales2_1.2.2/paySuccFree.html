@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>图吧汽车卫士-提交成功</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+	<link rel="stylesheet" type="text/css" href="style/base.css?v=1.2.0">
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="js/common.js?v=1.2.0"></script>
+<style>
+ul{list-style: none; margin: 0; padding: 0;}
+.block2{ width: 90%; margin: 1.5em 5%; font: 0.9em/1.8em microsoft yahei; text-align: left; color: #333;}
+
+.orderBanner{ background: url(img/20140909/order_banner.png) no-repeat #f89e34;  -webkit-background-size:cover; background-size:cover;}
+.orderBanner .tit{padding-top:16.25%;}
+.orderBanner .txt{padding:3% 7.64% 10% 7.64%; color: #fff; text-align: left; line-height: 1.8em; font-size: 0.9em;}
+.orderBanner .txt em{ font-size: 1.5em; font-style: normal; margin: 0 0.5em;}
+
+.orderNum{ background: #fff; border-radius: 5px; color: #5d6368; font-weight: bold; font-size: 1.1em; margin-top: 2em; margin-bottom: 2em;}
+
+.succ_bottom{ width: 90%; margin: 1.5em 5%; border: 1px solid #d4d4d4; text-align: left;}
+.succ_bottom img{ width: 22%; padding:1em 0 0 1em;}
+.succ_bottom p{margin: 0;}
+.succ_bottom .code{ margin:0.2em 1em 1em 1em; color: #07a0f9;}
+.succ_bottom .codeName{ float: right;}
+.succ_bottom .codeTit{color: #5d6368; display: none;}
+</style>
+</head>
+<body>
+<div id="content">
+	<div class="block orderBanner">
+		<img class="block_img tit" src="img/20140909/paySucc_p2_2.png" alt="">
+		<p class="txt"><span id="tip"></span><br>有疑问请咨询客服：400-661-6677</p>
+	</div>
+
+
+	<div class="block" id="cdk">
+		<div class="succ_bottom">
+			
+			<div id="cdk2">
+				<img src="img/paySucc_02.png">
+				<div class="code cf">
+					<p class="codeTit">图吧导航VIP激活码：</p>
+					<p id="data" style="display:none"><span class="codeName">全国数据</span><span id="codeData"></span></p>
+					<div style="clear:both;"></div>
+					<p id="eye" style="display:none"><span class="codeName">增强电子眼</span><span id="codeEye"></span></p>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="block" id="obd" style="display:none">
+		<img class="block_img" style="margin-top:-2em; margin-bottom:2em;" src="img/20140909/paySucc_p3.png" alt="">
+	</div>
+
+	<div class="block">
+		<a id="backToHomePage" class="btn btn_normal" style="margin-top:2em; margin-bottom:2em;" href="javascript:;">返回首页</a>
+	</div>
+	
+</div>
+<script>
+$(function(){
+	if(oSearch.type == 'eye' || oSearch.type == 'data'){
+		
+		$('#tip').text('感谢您的参与。')
+		if(oSearch.type == 'eye'){
+			$('#eye').show();
+			$('#codeEye').text(oSearch.message)
+		}else if(oSearch.type == 'data'){
+			$('#data').show();
+			$('#codeData').text(oSearch.message)
+		}
+	}else if(oSearch.type == 'obd'){
+		
+		$('#data').show();
+		$('#eye').show();
+		$('#codeData').text(oSearch.message.split(',')[0]);
+		$('#codeEye').text(oSearch.message.split(',')[1]);
+		
+		
+		$('#tip').text('我们将在2个工作日内为您寄出购买的设备，请您耐心等待。感谢您的参与。')
+	}
+
+	$('#backToHomePage').on('click',function(){
+		window.location.href = getCookie('homePage').replace(/@@@/g,'=')
+	})
+})
+</script>
+</body>
+</html>

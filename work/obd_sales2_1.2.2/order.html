@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>图吧汽车卫士-填写订单</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+	<link rel="stylesheet" type="text/css" href="style/base.css?v=1.2.0">
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="js/common.js?v=1.2.0"></script>
+<style>
+ul{list-style: none; margin: 0; padding: 0;}
+.block2{ width: 90%; margin: 1.5em 5%; font: 0.9em/1.8em microsoft yahei; text-align: left; color: #333;}
+
+.orderBanner{ background: url(img/20140909/order_banner.png) no-repeat #f89e34;  -webkit-background-size:cover; background-size:cover;}
+.orderBanner .tit{padding-top:16.25%;}
+.orderBanner .txt{padding:6% 7.64% 10% 7.64%; color: #fff; text-align: left; line-height: 1.8em; margin-top: 0;}
+.orderBanner .txt em{ font-size: 1.6em; font-style: normal; margin: 0 0.5em;}
+
+.order_table{ line-height: 1.6em;}
+.order_table li{ margin-bottom: 0.5em;}
+.order_table div{ float: left;}
+.order_table .left{ width: 24%;}
+.order_table .right{ width: 76%;}
+.order_tip{ background: #fefaf1; border: 1px dashed #f2e8cf; border-radius: 5px; margin-top: 1em; color: #c5a557;}
+.order_tip p{ padding: 0.6em 1em; margin:0; }
+
+.order_form{ width: 90%; margin: 0 auto; }
+.order_form .row{ border-bottom: 1px solid #bdbcbc; margin-bottom: 1.2em;}
+.order_form .row2{ margin-bottom: 1.2em; margin-left: 16%;}
+.order_form .row2 select,.order_form .row2 input{ border-bottom: 1px solid #bdbcbc; padding-bottom: 0.5em; background: #fff;}
+.order_form .ico{ width: 8.75%; display: inline-block;}
+.order_form .input1{ width: 84%; vertical-align: 0.6em; font-size: 1em; line-height: 1.8em; border:0; float: right;}
+.order_form .row2 .input1{ width: 100%; vertical-align: 0;}
+
+.order_form2{ background: #fff; border: 1px solid #b6bcc3; padding:0.5em 1em; margin-top: 1.6em;}
+.order_form2 .left{ float: left; color: #666;}
+.order_form2 .right{ float: right; color: #000;}
+.order_form2 select{ border: none; background: none; height: 2em; line-height: 2em;}
+
+</style>
+
+</head>
+<body>
+<div id="content">
+	<div class="block orderBanner">
+		<img id="cgs" class="block_img tit" src="img/20140909/order_p2.png" alt="">
+		<p class="txt">您获得了用<em id="priceOff"></em>购买汽车卫士套装的资格，请填写相关信息。</p>
+	</div>
+	<div class="block2">
+		<ul class="order_table">
+			<li class="cf">
+				<div class="left">商品信息:</div>
+				<div id="proName" class="right"></div>
+			</li>
+			<li class="cf">
+				<div class="left">商品价格:</div>
+				<div class="right"><span id="proPrice" style="color:red; font-size:1.5em"></span> 元</div>
+			</li>
+		</ul>
+		<div class="order_tip"><p>温馨提示: 汽车卫士能完美适配在有obd2接口的车上，特别是07年之后的车型。</p></div>
+	</div>
+	<div class="block2">
+		<p style="margin-bottom:0.5em">个人信息:</p>
+		<div class="order_form">
+			<div class="row cf">
+				<div class="ico"><img class="block_img" src="img/20140909/order_ico01.png" alt=""></div>
+				<input id="name" class="input1" type="text" placeholder="姓&nbsp;&nbsp;&nbsp;&nbsp;名">
+			</div>
+			<div class="row cf">
+				<div class="ico"><img class="block_img" src="img/20140909/order_ico02.png" alt=""></div>
+				<input id="phone" class="input1" type="text" placeholder="手机号码">
+			</div>
+			
+			<div id="list_area">
+				<div class="row cf">
+					<div class="ico"><img class="block_img" src="img/20140909/order_ico05.png" alt=""></div>
+					<select class="input1" id="addressL1"><option value="undefined">选择地址</option></select>
+				</div>
+				<div class="row2 cf">
+					<select class="input1" id="addressL2"><option value="undefined">请选择</option></select>
+				</div>
+				<div class="row2 cf">
+					<select class="input1" id="addressL3"><option value="undefined">请选择</option></select>
+				</div>
+			</div>
+
+			<div class="row2 cf">
+				<input id="addressL4" class="input1" type="text" placeholder="请填写详细地址">
+			</div>
+		</div>
+		<div class="order_form2 cf">
+			<div class="left">支付方式</div>
+			<div id="payMode" class="right">
+				<!-- <select id="payMode">
+					<option value="alipay_wap">支付宝支付</option>
+				</select> -->
+				支付宝支付
+			</div>
+		</div>
+		<a href="javascript:;" id="submit" class="btn btn_normal" style="width:100%; margin:1.2em 0;">提交信息</a>
+	</div>
+</div>
+<script type="text/javascript" src="js/linkageSelectArea.js"></script>
+<script type="text/javascript" src="js/dataAddress/ProJson.js"></script>
+<script type="text/javascript" src="js/dataAddress/CityJson.js"></script>
+<script type="text/javascript" src="js/dataAddress/DistrictJson.js"></script>
+<script>
+$(function(){
+	getPro();
+	var goodsId = oSearch.prizeId || '';
+	$('#submit').on('click',submit);
+
+	linkageSelect("#list_area", {
+        dataArr: [ProJson, CityJson, DistrictJson],
+        optionArr: [
+            {value: "ProID", text: "ProName"},
+            {value: "CityID", text: "CityName"},
+            {value: "Id", text: "DisName"}
+        ]
+    });
+})
+
+function str2obj(str){
+	var str=str.substring(1);
+	var arr=str.split('&');
+	var obj={};
+	for(var i=0; i<arr.length; i++){
+		arr2=arr[i].split('=');
+		obj[arr2[0]]=arr2[1];
+	}
+	return obj;
+}
+
+function isMobile(str){
+	var reg = /^(1\d{10})$/;
+	return reg.test(str);
+}
+
+function getlistTxt (dom) {
+    var obj = document.getElementById(dom); //定位id
+    var index = obj.selectedIndex; // 选中索引
+    var text = obj.options[index].text; // 选中文本
+    var value = obj.options[index].value; // 选中值
+    return text;
+}
+
+function submit(){
+	var valL1=getlistTxt('addressL1');
+	var valL2=getlistTxt('addressL2');
+	var valL3=getlistTxt('addressL3');
+	var valL4=$('#addressL4').val().replace(/\s+/g,"");
+	var valName=$('#name').val().replace(/\s+/g,"");
+	var valPhone=$('#phone').val().replace(/\s+/g,"");
+	var valAddress='';
+	//console.log(valC1+' - '+valC2+' - '+valC3+' - '+valL1+' - '+valL2+' - '+valL3+' - '+valL4+' - '+valName+' - '+valPhone+' - '+valQQ)
+
+	if(valName == '' || valName == null){
+		dialog({msg:'请填写收货人'});
+		$('#name').focus();
+		return false;
+	}else if(valName.length>6){
+		dialog({msg:'收货人姓名应小于6个字，请重新输入'});
+		$('#name').focus();
+		return false;
+	}else if(valPhone == '' || valPhone == null){
+		dialog({msg:'请填写手机号'});
+		$('#phone').focus();
+		return false;
+	}else if(!isMobile(valPhone)){
+		dialog({msg:'手机号码错误，请重新输入'});
+		$('#phone').focus();
+		return false;
+	}else if(valL1=='选择地址'){
+		dialog({msg:'请选择省份'});
+		return false;
+	}else if(valL2=='请选择'){
+		dialog({msg:'请选择城市'});
+		return false;
+	}else if(valL3=='请选择'){
+		if($('#addressL3').children().length > 1){
+			dialog({msg:'请选择区县'});
+			return false;
+		}else{
+			valL3 = "";
+		}
+	}else if(valL4 == '' || valL4 == null){
+		dialog({msg:'请填写收货地址'});
+		$('#addressL4').focus();
+		return false;
+	}else if(valL4.length>50){
+		dialog({msg:'收货地址应小于50个字，请重新输入'});
+		$('#addressL4').focus();
+		return false;
+	}
+	
+	if(valL1===valL2){
+		valAddress=valL1+valL3+valL4;
+	}else{
+		valAddress=valL1+valL2+valL3+valL4;
+	}
+
+	var param = {};
+	if(oSearch.prizeId){
+		param = {
+			"code" : 0,
+			"arrays" : [
+				{
+					"goodsId" : payParam.goodsId,
+					"goodsTitle" : payParam.goodsTitle,
+					"goodsPrice" : payParam.goodsPrice,
+					"userName" : valName,
+					"userAddress" : valAddress,
+					"userPhone" : valPhone,
+					"payWay" : "alipay_wap",
+					"productId" : payParam.productId,
+					"sign" : "oILMRlYOk4wbYzl4Nn8vTnM3Lkiif0X0ZySOEsGc5yIDSgjoKo",
+					"activeId" : '',
+					"prizeId" : payParam.prizeId
+				}
+			]
+		};
+			
+	}else{
+		param = {
+			"code" : 0,
+			"arrays" : [
+				{
+					"goodsId" : payParam.goodsId,
+					"goodsTitle" : payParam.goodsTitle,
+					"goodsPrice" : payParam.goodsPrice,
+					"userName" : valName,
+					"userAddress" : valAddress,
+					"userPhone" : valPhone,
+					"payWay" : "alipay_wap",
+					"productId" : payParam.productId,
+					"sign" : "oILMRlYOk4wbYzl4Nn8vTnM3Lkiif0X0ZySOEsGc5yIDSgjoKo",
+					"activeId" : ''
+				}
+			]
+		};
+	}
+
+	if(payParam.status == 'success'){
+		dialog({msg:'您已经购买了该奖品，不能重复提交'});
+	}else{
+		$.ajax({
+			url: postSubmitOrder,
+			type: 'POST',
+			contentType: "text/plain",
+			data: JSON.stringify(param),
+			beforeSend: function(){
+				$('#submit').off('click',submit);
+			},
+			success: function(data){
+				$('#submit').on('click',submit);
+				if(data.code === 200){
+					window.location.href=postAlipay + '?order_num='+data.arrays[0].orderId+'&product_code='+payParam.productId;
+				}else if(data.code === 1073){
+					dialog({msg:'您已经购买了该奖品，不能重复提交'});
+				}else{
+					dialog({msg:'网络异常,未提交成功'});
+				}
+			},
+			error: function (){
+				$('#submit').on('click',submit);
+				dialog({msg:'网络异常,未提交成功'});
+			}
+		})
+	}
+}
+
+var payParam = {};
+//获取产品信息
+function proSucc(data){
+	if(data.code === 200){
+
+		payParam.goodsId = data.arrays.goodsId;
+		payParam.productId = data.arrays.productId;
+		payParam.goodsTitle = data.arrays.goodsTitle;
+		payParam.goodsPrice = data.arrays.goodsPreferPrice;
+		payParam.status = data.arrays.status;
+		
+		$('#proName').text(data.arrays.goodsTitle);
+		$('#proPrice').text(data.arrays.goodsPreferPrice);
+		$('#priceOff').text('优惠价格138元');;
+	}
+}
+
+//获取奖品信息
+function prizeSucc(data){
+	if(data.code === 200){
+		
+		payParam.goodsId = data.arrays.goodsId;
+		payParam.productId = data.arrays.producrId;
+		payParam.goodsTitle = data.arrays.prizeName;
+		payParam.goodsPrice = data.arrays.prizePrice;
+		payParam.prizeId = data.arrays.prizeId;
+		payParam.status = data.arrays.status;
+
+		$('#proName').text(data.arrays.prizeName);
+		$('#proPrice').text(data.arrays.prizePrice);
+
+		var priceOff = $('#priceOff');
+		if(payParam.goodsId == 'web_obd_gq0002'){
+			priceOff.text('1折');
+		}else if(payParam.goodsId == 'web_obd_gq0003'){
+			priceOff.text('3折');
+		}else if(payParam.goodsId == 'web_obd_gq0004'){
+			priceOff.text('5折');
+		}else{
+			priceOff.text('优惠价格138元');
+			$('#cgs').hide();
+		}
+	}
+}
+
+//获取产品
+function getPro(){
+	if(oSearch.prizeId){
+		$.ajax({
+			url: postGetPrzie,
+			data: {"prizeId": oSearch.prizeId},
+			success: prizeSucc
+		});
+	}else{
+		$.ajax({
+			url: postGetPro,
+			data: {"goods_number": 'web_obd_0001'},
+			success: proSucc
+		});
+		$('#cgs').hide();
+	}
+	
+}
+
+</script>
+</body>
+</html>

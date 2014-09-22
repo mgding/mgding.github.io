@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>图吧汽车卫士-中奖纪录</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+	<link rel="stylesheet" type="text/css" href="style/base.css?v=1.2.0">
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="js/common.js?v=1.2.0"></script>
+<style>
+p{ margin: 0; line-height: 1.8em;}
+.tickets{ list-style: none; padding: 1% 0 0 1%;}
+.tickets li{ position: relative; margin-bottom: 3%;}
+.tickets img{ display: block;}
+.tickets .content{ width: 58.06%; height: 80.07%;  position: absolute; top: 12%; left: 32.08%;}
+.tickets .p2{ font-size: 0.9em;}
+.buyBtn{ width: 79%; display: block; text-align: center; color: #fff; text-decoration: none; letter-spacing: 2px; border-radius: 3px; margin: 2% auto 0 auto; font-size: 0.9em; line-height: 2.2em;}
+.t1 .p1,.t1 .p2{ color: #ed574b;}
+.t3 .p1,.t3 .p2{ color: #db7847;}
+.t5 .p1,.t5 .p2{ color: #725d29;}
+.tFree .p1{ color: #fff2c3; margin: 7% 0 4% 0;}
+.t1 .price{ color: #ff0000;}
+.t3 .price{ color: #f33939;}
+.t5 .price{ color: #e5681d;}
+.t1 .buyBtn{ background: #f0746a;}
+.t3 .buyBtn{ background: #eb8d5e;}
+.t5 .buyBtn{ background: #ba9e5a;}
+.tFree .buyBtn{ background: #fff2c3; color: #ed574b;}
+.disableBtn{ background: #d7d7d7 !important; color: #999 !important;}
+
+.none{ color: #999ca1; margin-top: 50%; letter-spacing: 1px;}
+
+</style>
+</head>
+<body>
+<div id="content">
+	<ul class="tickets">
+		<!-- <li class="t1" style="display:none;">
+			<img class="block_img" src="img/20140909/ticket_1.png" alt="">
+			<div class="content">
+				<p class="p1">汽车卫士数据导航套装</p>
+				<p class="p2">折后价： <span class="price">19</span>元</p>
+				<a class="buyBtn" href="javascript:;">立即购买</a>
+			</div>
+		</li>
+		<li class="t3" style="display:none;">
+			<img class="block_img" src="img/20140909/ticket_3.png" alt="">
+			<div class="content">
+				<p class="p1">汽车卫士数据导航套装</p>
+				<p class="p2">折后价： <span class="price">69</span>元</p>
+				<a class="buyBtn" href="javascript:;">立即购买</a>
+			</div>
+		</li>
+		<li class="t5" style="display:none;">
+			<img class="block_img" src="img/20140909/ticket_5.png" alt="">
+			<div class="content">
+				<p class="p1">汽车卫士数据导航套装</p>
+				<p class="p2">折后价： <span class="price">99</span>元</p>
+				<a class="buyBtn" href="javascript:;">立即购买</a>
+			</div>
+		</li>
+		<li class="tFree" style="display:none;">
+			<img class="block_img" src="img/20140909/ticket_free.png" alt="">
+			<div class="content">
+				<p class="p1">免费获得汽车卫士</p>
+				<a class="buyBtn" href="javascript:;">立即领取</a>
+			</div>
+		</li>
+		<li class="tFree" style="display:none;">
+			<img class="block_img" src="img/20140909/ticket_free.png" alt="">
+			<div class="content">
+				<p class="p1">免费获得汽车卫士</p>
+				<a class="buyBtn disableBtn" href="javascript:;">已领取</a>
+			</div>
+		</li> -->
+	</ul>
+	
+	<p id="none" class="none" style="display:none;">您暂无中奖纪录</p>
+<script>
+$(function(){
+	function getTickets(){
+		$.ajax({
+			url : postGetTickets,
+			data : {
+				mac : getCookie('mac')
+			},
+			success :function (data){
+				var json = data2json(data);
+				if(json.code == 200){
+					createTickets(json.arrays);
+				}else{
+					$('.none').show();
+					$('.tickets').hide();
+				}
+			}
+		})
+	}
+	function createTickets(arry){
+		var arr = [];
+		var str = '<li class="{{li}}"><img class="block_img" src="img/20140909/{{bg}}"><div class="content"><p class="p1">{{tit}}</p><p class="p2" style="display:{{isFree}}">折后价： <span class="price">{{price}}</span>元</p><a class="buyBtn {{isDisable}}" href="{{link}}">{{btn}}</a></div></li>';
+		for(var i=0; i<arry.length; i++){
+			if(arry[i].goodsId == 'web_obd_gq0001' || arry[i].goodsId == 'web_obd_gq0007' || arry[i].goodsId == 'web_obd_gq0008'){
+
+				var dom = str.replace('{{li}}','tFree');
+				dom = dom.replace('{{bg}}','ticket_free.png');
+				dom = dom.replace('{{tit}}',arry[i].prizeName);
+				dom = dom.replace('{{isFree}}','none');
+				if(arry[i].status == 'success'){
+					dom = dom.replace('{{link}}','javascript:;');
+					dom = dom.replace('{{isDisable}}','disableBtn');
+					dom = dom.replace('{{btn}}','已领取');
+				}else{
+					dom = dom.replace('{{link}}','orderFree.html?prizeId='+arry[i].prizeId);
+					dom = dom.replace('{{isDisable}}','');
+					dom = dom.replace('{{btn}}','立即领取');
+				}
+				$(dom).appendTo('.tickets');
+
+			}else if(arry[i].goodsId == 'web_obd_gq0002' || arry[i].goodsId == 'web_obd_gq0003' || arry[i].goodsId == 'web_obd_gq0004'){
+
+				if(arry[i].goodsId == 'web_obd_gq0002'){
+
+					var dom = str.replace('{{li}}','t1');
+					dom = dom.replace('{{bg}}','ticket_1.png');
+
+				}else if(arry[i].goodsId == 'web_obd_gq0003'){
+
+					var dom = str.replace('{{li}}','t3');
+					dom = dom.replace('{{bg}}','ticket_3.png');
+
+				}else if(arry[i].goodsId == 'web_obd_gq0004'){
+
+					var dom = str.replace('{{li}}','t5');
+					dom = dom.replace('{{bg}}','ticket_5.png');
+
+				}
+				
+				if(arry[i].status == 'success'){
+
+					dom = dom.replace('{{link}}','javascript:;');
+					dom = dom.replace('{{isDisable}}','disableBtn');
+					dom = dom.replace('{{btn}}','已购买');
+
+				}else{
+
+					dom = dom.replace('{{link}}','order.html?prizeId='+arry[i].prizeId);
+					dom = dom.replace('{{isDisable}}','');
+					dom = dom.replace('{{btn}}','立即购买');
+
+				}
+
+
+				dom = dom.replace('{{tit}}',arry[i].prizeName);
+				dom = dom.replace('{{isFree}}','block');
+				dom = dom.replace('{{price}}',arry[i].prizePrice);
+				$(dom).appendTo('.tickets');
+
+			}
+		}
+	}
+	getTickets();
+})
+</script>
+</div>
+</body>
+</html>
